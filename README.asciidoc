@@ -1,0 +1,63 @@
+= WanTcl
+
+**Copyright (C) Tim K/RoverAMD <timprogrammer@rambler.ru> 2019-2020**
+
+**WanTcl** is a small software library providing some functions for working wth strings, lists and dicts. It was created by me after realising that I tend to reimplement some functions that are missing from Tcl's core stdlib or from Tcllib from project to project.
+
+WanTcl is available under 0BSD License. Oh, and yes, it only depends on Tcl 8.4/8.5/8.6/8.7 and on Tcllib.
+
+== Installing
+
+macOS users can just run this command to install WanTcl:
+
+[source,bash]
+----
+tclsh8.5 install-macos.tcl
+----
+
+Linux/FreeBSD folders will have to copy all of the files from this folder into a subfolder inside Tcl's library folder. You can get the name of that folder by running:
+
+[source,bash]
+----
+printf 'puts [info library]' | tclsh -
+----
+
+== Some most important functions
+
+While documentation for WanTcl is on the way, here is a little showcase of some of the methods that are provided by WanTcl:
+
+[source,tcl]
+----
+package require wantcl::lists
+package require wantcl::strings
+package require wantcl::dicts
+package require wantcl::http
+
+# You can omit some of the above lines if you don't need some of the methods.
+
+set listing {foo bar meow mew purr}
+if {! [lhas $listing meow mew purr lick]} {
+	# lhas is a list command provided by WanTcl
+	# It allows you to check if any of the multiple items are contained
+	# inside a list.
+	puts stderr "{$listing} does not contain any cat sounds."
+	exit 1
+}
+
+set data [dict create items $listing]
+puts [dictToJSON $data]
+# dictToJSON is a dict command provided by WanTcl
+# It converts a Tcl dict into a JSON clip that you can later
+# parse from JavaScript, etc.
+
+set bingContents [httpGet http://www.bing.com]
+# httpGet is a http command provided by WanTcl
+# It is a convenient wrapper around http::geturl and it
+# also supports TLS (sort of).
+
+puts [dictToCGI $data]
+# dictToCGI is a http command provided by WanTcl
+# It converts a Tcl dict into a HTTP query string (key1=value1&key2=value2)
+
+exit 0
+----
